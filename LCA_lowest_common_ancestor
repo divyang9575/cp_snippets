@@ -1,0 +1,60 @@
+class LCA {
+    public:
+        vector<vector<int>> adj ;
+    private:
+        int n ;
+        vector<int> par, depth, L ;
+        vector<vector<int>> T ;
+        
+        void dfs(int i, int p, int d) {
+            depth[i] = d;
+            par[i] = p;
+            for (int j : adj[i]) 
+                if(j != p) dfs(j, i, d + 1) ;
+        }
+
+        void lift () {
+            for (int i = 0; i < n; i++) T[i][0] = par[i] ;
+            for (int i = 1; i < 20; i++) {
+                for (int nd = 0; nd < n; nd++) {
+                    if(T[nd][i - 1] == -1) continue;
+                    T[nd][i] = T[T[nd][i - 1]][i - 1] ;
+                }
+            }
+        }
+    
+    public:
+        LCA (int nn) {
+            n = nn ; adj.resize(n); par.resize(n);
+            depth.resize(n); L.resize(n + 1); 
+            T.assign(n, vector<int>(20, -1));
+            for (int64_t i = 1; i <= n; i++) L[i] = __lg(i) ;
+        }
+        void init() {
+            dfs(0, -1, 0) ; lift() ;
+        }
+        int qry(int x, int k) {
+            int pp = x;
+            while(k > 0) {
+                pp = T[pp][L[k]];
+                if(pp == -1) break;
+                k -= (1ll << L[k]) ;
+            }
+            return pp ;
+        }
+
+        int lca (int a, int b) {
+            if(depth[a] < depth[b]) swap(a, b) ;
+            int dif = depth[a] - depth[b] ;
+            if(dif > 0) a = qry(a, dif) ;
+            if(a == b) return a;
+
+            for (int i = 19; i >= 0; i--) {
+                if(T[a][i] != T[b][i]) {
+                    a = T[a][i];
+                    b = T[b][i];
+                }
+            }
+            return T[a][0] ;
+        }
+};
