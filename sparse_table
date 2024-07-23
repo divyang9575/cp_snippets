@@ -1,0 +1,51 @@
+class sparseTable {
+    private:
+        int n, k = 20;
+        vector<vector<int>> ST;
+        vector<int> lg;
+    public:
+        vector<int> arr;
+        sparseTable(int nn){
+            n = nn;
+            arr.resize(n);
+            ST.resize(k, vector<int>(n+1));
+            lg.resize(n+1);
+        }
+
+        int combine(int &a, int &b) {
+            return __gcd(a, b);
+        }
+
+        // ST[i][j] -> {j, j + 2^i - 1} 
+        void sparse(){
+            for(int j=0; j<n; j++) ST[0][j] = arr[j];
+            for(int i=1; i<k; i++){
+                for(int j=0; j + (1<<i) <= n; j++){
+                    ST[i][j] = combine(ST[i-1][j], ST[i-1][j + (1<<(i-1))]);
+                }
+            }
+        }
+
+        void calclog(){
+			lg[1] = 0 ;
+            for(int i=2; i<=n; i++){
+                lg[i] = lg[i / 2] + 1 ;
+            }
+        }
+
+        int query(int l, int r){
+            int i = lg[r - l + 1];
+            return combine(ST[i][l], ST[i][r - (1<<i) + 1]);
+        }
+
+        // int query(int l, int r){
+        //     int ans = 0;
+        //     for(int i=k-1; i>=0; i--){
+        //         if((1<<i) <= r - l + 1){
+        //             combine(ans, ST[i][l]);
+        //             l += (1<<i);
+        //         }
+        //     }
+        //     return ans;
+        // }
+};
