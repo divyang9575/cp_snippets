@@ -1,0 +1,41 @@
+class SegmentTree {
+    private:
+        int n;
+        vector<int> t, A ;
+        #define mid ((lo + hi) / 2) 
+        #define lc (2*i+1) 
+        #define rc (2*i+2)
+        int cmb(int a, int b) { return (a + b) ;}
+
+        void build(int i, int lo, int hi){
+            if(lo == hi) { t[i] = A[lo]; return; }
+            build(lc, lo, mid); build(rc, mid+1, hi);
+            t[i] = cmb(t[lc], t[rc]) ; 
+        }
+        void pUpd(int i, int lo, int hi, int idx, int val) {
+            if(lo == hi){
+                A[idx] += val; // change here
+                t[i] += val;  return;
+            }
+            if(idx <= mid) pUpd(lc, lo, mid, idx, val);
+            else pUpd(rc, mid+1, hi, idx, val);
+            t[i] = cmb(t[lc], t[rc]) ;
+        }
+        int query(int i, int lo, int hi, int l, int r) { 
+            if(r < lo || l > hi) return 0; // changes here for invalid segment
+            if(l <= lo && hi <= r){ return t[i]; }
+            return cmb(query(lc, lo, mid, l, r), query(rc, mid+1, hi, l, r)) ;
+        }
+
+    public : 
+        SegmentTree(vector<int> &arr, int n_) {
+            n = n_; t.resize(4*n); A = arr;
+            build(0, 0, n - 1);
+        }
+        void update(int ind, int val) {
+            pUpd(0, 0, n - 1, ind, val);
+        }
+        int qry(int l, int r) {
+            return query(0, 0, n - 1, l, r);
+        }
+};
