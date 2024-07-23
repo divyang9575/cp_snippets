@@ -1,0 +1,28 @@
+class DSU {
+    int n;
+    vector<int> par, sz;
+    public:
+
+    DSU(int n) {
+        this->n = n;
+        par = vector<int>(n);
+        sz = vector<int>(n, 1);
+        iota(par.begin(), par.end(), 0) ;
+    }
+
+    int get(int node) {
+        if(node == par[node]) return node;
+        else return par[node] = get(par[node]) ;
+    }
+
+    bool merge(int x, int y) {
+        x = get(x), y = get(y);
+        if(x == y) return false; // already in the same component
+        else {
+            if(sz[y] > sz[x]) swap(x, y);
+            sz[x] += sz[y];
+            par[y] = x;
+            return true;
+        }
+    }
+};
