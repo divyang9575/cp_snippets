@@ -1,0 +1,43 @@
+class LazySegmentTree {
+    private:
+        int n; vector<int> t, A, L ;
+        #define mid ((lo + hi) / 2)
+        #define lc (2*i+1) 
+        #define rc (2*i+2)
+        int cmb(int a, int b) { return (a + b) ; }
+
+        void build(int i, int lo, int hi){
+            if(lo == hi) { t[i] = A[lo]; return; }
+            build(lc, lo, mid); build(rc, mid+1, hi);
+            t[i] = cmb(t[lc], t[rc]); 
+        }
+        void prop(int lo, int hi, int i, int v) {
+            t[i] += (hi-lo+1) * v ; // changes here
+            if(lo != hi) { L[lc] += v; L[rc] += v ; }
+        }
+        void lazyUpdates(int i, int lo, int hi, int l, int r, int v) {
+            if(L[i] != 0) { prop(lo, hi, i, L[i]) ; L[i] = 0; }
+            if(r < lo || l > hi) return;              // invalid segment
+            if(l <= lo && hi <= r) { prop(lo, hi, i, v) ; return;}
+            lazyUpdates(lc, lo, mid, l, r, v); lazyUpdates(rc, mid+1, hi, l, r, v);
+            t[i] = cmb(t[lc], t[rc]) ;
+        }
+        int query(int i, int lo, int hi, int l, int r) { 
+            if(L[i] != 0) { prop(lo, hi, i, L[i]) ; L[i] = 0; }
+            if(lo >= l && hi <= r){ return t[i]; }
+            if(r < lo || l > hi) return 0;        // changes here for invalid segment
+            return cmb(query(lc, lo, mid, l, r), query(rc, mid+1, hi, l, r)) ;
+        }
+
+    public : 
+        LazySegmentTree(vector<int> &arr, int n_) {
+            n = n_; t.resize(4*n); L.resize(4*n, 0); A = arr;
+            build(0, 0, n - 1);
+        }
+        void update(int l, int r, int val) {
+            lazyUpdates(0, 0, n - 1, l, r, val);
+        }
+        int qry(int l, int r) {
+            return query(0, 0, n - 1, l, r);
+        }
+};
