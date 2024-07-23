@@ -1,0 +1,29 @@
+inline string inttostr(int a){
+  char x[100];
+  sprintf(x,"%lld",a); string s = x;
+  return s;
+}
+
+inline int strtoint(string a){
+  char x[100]; int res;
+  strcpy(x,a.c_str()); sscanf(x,"%lld",&res);
+  return res;
+}
+
+inline string getstr(void){
+  char x[1000005];
+  scanf("%s",x); string s = x;
+  return s;
+}
+
+inline string uppercase(string s){
+  int n = s.size(); 
+  for(int i=0; i<n; i++) if (s[i] >= 'a' && s[i] <= 'z') s[i] = s[i] - 'a' + 'A';
+  return s;
+}
+ 
+inline string lowercase(string s){
+  int n = s.size(); 
+  for(int i=0; i<n; i++) if (s[i] >= 'A' && s[i] <= 'Z') s[i] = s[i] - 'A' + 'a';
+  return s;
+}
