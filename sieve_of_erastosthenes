@@ -1,0 +1,20 @@
+#define N 100005
+vector<int> primes ;
+int isprime[N] ;
+int spf[N] ;
+void sieve() {
+    memset(isprime, 0, sizeof isprime) ; memset(spf, 0, sizeof spf) ;
+    spf[1] = 1; isprime[0] = isprime[1] = 1 ;
+
+    for (long long i = 2; i < N; i++) {
+        if (isprime[i] == 1) continue; // not prime
+
+        primes.push_back(i);
+        spf[i] = i;
+
+        for (long long j = i * i; j < N; j += i) {
+            isprime[j] = 1; 
+            if(spf[j] == 0) spf[j] = i;
+        }
+    }
+}
