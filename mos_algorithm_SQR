@@ -1,0 +1,44 @@
+void remove(int idx);
+void add(int idx);
+int get_answer();
+// int block_size ;
+#define block_size 400
+ 
+struct Query {
+    int l, r, idx;
+} ;
+ 
+bool cmp(Query p, Query q) {
+    if (p.l / block_size != q.l / block_size)
+        return p.l / block_size < q.l / block_size ;
+    return (p.l / block_size & 1) ? (p.r < q.r) : (p.r > q.r);
+}
+ 
+vector<int> mos_algorithm(vector<Query> queries) {
+    vector<int> answers(queries.size());
+    sort(queries.begin(), queries.end(), cmp) ;
+ 
+    int cur_l = 0;
+    int cur_r = -1;
+ 
+    for (Query q : queries) {
+        while (cur_l > q.l) {
+            cur_l--;
+            add(cur_l);
+        }
+        while (cur_r < q.r) {
+            cur_r++;
+            add(cur_r);
+        }
+        while (cur_l < q.l) {
+            remove(cur_l);
+            cur_l++;
+        }
+        while (cur_r > q.r) {
+            remove(cur_r);
+            cur_r--;
+        }
+        answers[q.idx] = get_answer();
+    }
+    return answers;
+}
