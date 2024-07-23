@@ -1,0 +1,46 @@
+#define yes cout << "YES" << endl
+#define no cout << "NO" << endl
+#define endl '\n'
+#define M 1000000007
+#define PI 3.1415926535897932384626433832795
+#define cntbits(x) __builtin_popcount(x)
+#define int long long int
+#define vi vector<int>
+#define vvi vector<vector<int>>
+#define all(a) a.begin(), a.end()
+#define precise(i) cout<<fixed<<setprecision(i)
+#define take(a,n) for(int j=0;j<n;j++) cin>>a[j]
+#define give(a,n) for(int j=0;j<n;j++) cout<<a[j]<<' '; cout << endl;
+#define vpi vector<pair<int,int>>
+#define pi pair<int,int>
+#define fast ios_base::sync_with_stdio(false),cin.tie(nullptr),cout.tie(nullptr);
+
+#define sum(a)     ( accumulate (all(a), 0ll))
+#define ctx(a, x)  ( count(all(a), (x)))
+#define mine(a)    (*min_element(all(a)))
+#define maxe(a)    (*max_element(all(a)))
+#define mini(a)    ( min_element(all(a)) - (a).begin())
+#define maxi(a)    ( max_element(all(a)) - (a).begin())
+#define lowb(a, x) ( lower_bound(all(a), (x)) - (a).begin())
+#define uppb(a, x) ( upper_bound(all(a), (x)) - (a).begin())
+
+template<typename F, typename S> ostream& operator <<(ostream& ostream, pair<F, S>& p) { cout << p.first << " " << p.second<<" "; return ostream; }
+template<typename T> ostream& operator <<(ostream& ostream, vector<T>& v) { for(auto& element : v) cout << element << " "; return ostream;}
+template<typename T> ostream& operator <<(ostream& ostream, vector<vector<T>>& v) {for(auto& row : v){ for(auto& cell : row) cout << cell << " "; cout << endl;} return ostream;}
+template<typename F, typename S> istream& operator >>(istream& istream, pair<F, S>& p) { cin >> p.first >> p.second; return istream;}
+template<typename T> istream& operator >>(istream& istream, vector<T>& v) { for(auto& element : v) cin >> element; return istream; }
+
+template<typename T> void unique(vector<T> &a){sort(all(a)); a.resize(unique(all(a)) - a.begin());}
+template<typename T> T ceil(T x, T y){return (x >= 0 ? (x + y - 1) / y : x / y);}
+template<typename T> T floor(T x, T y){return x / y - ((x ^ y) < 0 and x % y);}
+template<typename T> T gcd(T x, T y){return (x ? gcd(y % x, x) : y);}
+template<typename T> T lcm(T x, T y){return x / gcd(x, y) * y;}
+template<typename T> T ncr(T n, T k){if (n < k){return 0;} k = min(k, n - k); T ans = 1; rep(i, 1, k + 1){ans *= (n - i + 1), ans /= i;} return ans;}
+
+template<class T> using mxheap = priority_queue<T>;
+template<class T> using mnheap = priority_queue<T, vector<T>, greater<T>>;
+
+void modsum(int &a, int b) { a = (a%M + b%M + M )%M ;}
+void modmul(int &a, int b) { a = (a%M * b%M )%M ;}
+void ckmn(int &a, int b){ if(b < a) a = b; }
+void ckmx(int &a, int b){ if(b > a) a = b; }
